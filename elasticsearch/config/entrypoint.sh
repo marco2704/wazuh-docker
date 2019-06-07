@@ -41,6 +41,16 @@ xpack.ml.enabled: $XPACK_ML
  " >> $elasticsearch_config_file
 fi
 
+
+if [[ "x${ES_JAVA_OPTS_XMS}" = "x" || "x${ES_JAVA_OPTS_XMX}" = "x" ]]; then
+  echo "Heap size does not change"
+else
+  echo "Change heap size."
+  sed -i 's:-Xms1g:'$ES_JAVA_OPTS_XMS':g' /usr/share/elasticsearch/config/jvm.options
+  sed -i 's:-Xmx1g:'$ES_JAVA_OPTS_XMX':g' /usr/share/elasticsearch/config/jvm.options
+fi
+
+
 # Run load settings script.
 
 ./config_cluster.sh
